@@ -621,12 +621,25 @@ a:hover {
   padding-right: var(--space-4);
 }
 
+.experience-right {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: var(--space-6);
+  align-items: start;
+  padding: var(--space-5);
+  border-radius: 22px;
+  border: 1px solid rgba(17, 26, 24, 0.14);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 26px rgba(17, 26, 24, 0.1);
+}
+
 .experience-label {
-  margin: 0 0 var(--space-2);
+  margin: 4px 0 0;
   font-weight: 800;
   color: rgba(17, 26, 24, 0.92);
   letter-spacing: -0.2px;
   font-size: 18px;
+  text-transform: none;
 }
 
 .experience-value {
@@ -638,20 +651,41 @@ a:hover {
   color: var(--brand);
 }
 
-.experience-media {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-4);
+.experience-meta {
+  margin: 8px 0 0;
+  font-size: 20px;
+  font-weight: 750;
+  line-height: 1.2;
+  color: var(--brand);
 }
 
 .photo-card {
   margin: 0;
   aspect-ratio: 4 / 3;
-  border-radius: 20px;
+  border-radius: 16px;
   border: 1px solid rgba(17, 26, 24, 0.14);
   background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 10px 20px rgba(17, 26, 24, 0.08);
+  box-shadow: none;
   overflow: hidden;
+}
+
+.photo-card-portrait {
+  aspect-ratio: auto;
+}
+
+.photo-card-portrait .photo {
+  aspect-ratio: 3 / 4;
+  height: auto;
+}
+
+.profile-caption {
+  padding: 12px 14px;
+  border-top: 1px solid rgba(17, 26, 24, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: -0.15px;
+  color: rgba(17, 26, 24, 0.92);
 }
 
 .photo {
@@ -659,6 +693,24 @@ a:hover {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.experience-bio {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+  align-self: center;
+}
+
+.experience-bio p {
+  margin: 0 0 var(--space-3);
+}
+
+.experience-list {
+  margin: var(--space-2) 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
 }
 
 .service-list {
@@ -1117,8 +1169,10 @@ textarea::placeholder {
     grid-template-columns: 1fr;
   }
 
-  .experience-media {
+  .experience-right {
     grid-template-columns: 1fr;
+    padding: var(--space-4);
+    gap: var(--space-4);
   }
 }
 
