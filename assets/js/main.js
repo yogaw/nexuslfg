@@ -62,6 +62,110 @@
     });
   };
 
+  const setupHeroCarousel = () => {
+    const currentImage = document.querySelector("[data-hero-carousel-current]");
+    const nextImage = document.querySelector("[data-hero-carousel-next]");
+    if (!(currentImage instanceof HTMLImageElement)) return;
+    if (!(nextImage instanceof HTMLImageElement)) return;
+
+    const basePath = "assets/img/attr/crsl/";
+    const files = [
+      "Hols 2008 001.jpg",
+      "IMG_4059.jpeg",
+      "IMG_8316 (2).JPG",
+      "IMG_8699 (2).jpeg",
+      "SOPA.JPG",
+      "gasflux installed .JPEG",
+      "summa.JPG",
+    ];
+
+    const reduceMotion =
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const toUrl = (fileName) => `${basePath}${encodeURIComponent(fileName)}`;
+
+    const shuffle = (items) => {
+      const arr = items.slice();
+      for (let i = arr.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+
+    const altText = "Project and field work imagery";
+    let queue = shuffle(files);
+    let currentUrl = currentImage.currentSrc || currentImage.getAttribute("src") || "";
+    let timerId = null;
+    let isTransitioning = false;
+
+    let currentEl = currentImage;
+    let nextEl = nextImage;
+
+    currentEl.classList.add("is-active");
+    currentEl.alt = altText;
+    nextEl.alt = "";
+
+    const nextFile = () => {
+      if (queue.length === 0) queue = shuffle(files);
+      if (queue.length > 1 && toUrl(queue[0]) === currentUrl) {
+        const [first, second] = [queue[0], queue[1]];
+        queue[0] = second;
+        queue[1] = first;
+      }
+      return queue.shift();
+    };
+
+    const setImage = (fileName) => {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      const url = toUrl(fileName);
+      const preloader = new Image();
+      preloader.decoding = "async";
+      preloader.onload = () => {
+        nextEl.src = url;
+        nextEl.classList.add("is-active");
+        currentEl.classList.remove("is-active");
+
+        window.setTimeout(() => {
+          const previous = currentEl;
+          currentEl = nextEl;
+          nextEl = previous;
+          currentEl.alt = altText;
+          nextEl.alt = "";
+          currentUrl = url;
+          isTransitioning = false;
+        }, 650);
+      };
+      preloader.src = url;
+    };
+
+    const tick = () => {
+      setImage(nextFile());
+    };
+
+    const start = () => {
+      if (timerId !== null) return;
+      timerId = window.setInterval(tick, 3000);
+    };
+
+    const stop = () => {
+      if (timerId === null) return;
+      window.clearInterval(timerId);
+      timerId = null;
+    };
+
+    setImage(nextFile());
+    if (!reduceMotion) start();
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && !reduceMotion) start();
+      else stop();
+    });
+  };
+
   const setupContactFormStatus = () => {
     const form = document.querySelector("[data-contact-form]");
     if (!(form instanceof HTMLFormElement)) return;
@@ -85,5 +189,6 @@
   setCurrentYear();
   setupHeaderElevation();
   setupMobileNav();
+  setupHeroCarousel();
   setupContactFormStatus();
 })();
