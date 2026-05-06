@@ -178,6 +178,11 @@
     };
 
     form.addEventListener("submit", () => {
+      const emailInput = form.querySelector('input[name="email"]');
+      const replyToInput = form.querySelector('input[name="_replyto"]');
+      if (emailInput instanceof HTMLInputElement && replyToInput instanceof HTMLInputElement) {
+        replyToInput.value = emailInput.value;
+      }
       setStatus("Sending...");
     });
 
