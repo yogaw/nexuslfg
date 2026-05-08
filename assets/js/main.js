@@ -183,6 +183,12 @@
       if (emailInput instanceof HTMLInputElement && replyToInput instanceof HTMLInputElement) {
         replyToInput.value = emailInput.value;
       }
+
+      const nextInput = form.querySelector('input[name="_next"]');
+      if (nextInput instanceof HTMLInputElement) {
+        const baseUrl = `${window.location.origin}${window.location.pathname}`;
+        nextInput.value = `${baseUrl}#contact`;
+      }
       setStatus("Sending...");
     });
 
